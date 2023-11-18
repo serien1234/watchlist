@@ -28,11 +28,6 @@ class Movie(db.Model): # 表名将会是 movie
 
 
     
-@app.route('/')# 路由定义
-def index():
-    user = User.query.first()  # 读取用户记录
-    movies = Movie.query.all()  # 读取所有电影记录
-    return render_template('index.html', user=user, movies=movies)
 
 @app.cli.command() # 注册为命令
 @click.option('--drop', is_flag=True, help='Create after drop.')# 设置选项
@@ -50,7 +45,7 @@ def forge():
     db.create_all()
 
     # 在函数内定义全局变量
-    name = 'Grey Li'
+    name = 'Serien'
     movies = [
         {'title': 'My Neighbor Totoro', 'year': '1988'},
         {'title': 'Dead Poets Society', 'year': '1989'},
@@ -72,3 +67,15 @@ def forge():
     
     db.session.commit()
     click.echo('Done.')
+@app.context_processor
+def inject_user():
+    user = User.query.first()
+    return dict(user=user)
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+@app.route('/')
+def index():
+    movies = Movie.query.all()
+    return render_template('index.html', movies=movies)
+
