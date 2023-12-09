@@ -116,3 +116,190 @@ input[name=year] {
 .inline-form {
     display: inline;
 }
+/* 仅影响电影录入表单的样式 */
+.form-container {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.form-title {
+    text-align: center;
+    color: #333;
+}
+
+.movie-form {
+    display: grid;
+    grid-gap: 10px;
+    margin-top: 10px;
+}
+
+.movie-form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.movie-form .form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.movie-form .form-group input[type="text"],
+.movie-form .form-group input[type="date"],
+.movie-form .form-group input[type="number"] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.movie-form input[type="submit"].btn {
+    background-color: #0056b3;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.movie-form input[type="submit"].btn:hover {
+    background-color: #004494;
+}
+.search-form {
+    display: grid;
+    grid-gap: 10px;
+    margin-top: 10px;
+}
+
+.search-form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.search-form .form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.search-form .form-group input[type="text"],
+.search-form .form-group select.form-control {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.search-form input[type="submit"].btn {
+    background-color: #0056b3;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.search-form input[type="submit"].btn:hover {
+    background-color: #004494;
+}
+.results-container {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.movie-info, .actor-info {
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.movie-info h4, .actor-info h4 {
+    color: #0056b3;
+    margin-top: 0;
+}
+
+.movie-info ul, .actor-info ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.movie-info li, .actor-info li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.movie-info li:last-child, .actor-info li:last-child {
+    border-bottom: none;
+}
+
+.douban-link, .baike-link {
+    display: inline-block;
+    margin-top: 10px;
+    background-color: #007722;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.douban-link:hover, .baike-link:hover {
+    background-color: #005500;
+}
+
+
+
+
+/* 修改表单容器样式 */
+.addactor .form-container {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* 修改表单标题样式 */
+.addactor .form-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* 修改表单组件样式 */
+.addactor .form-group {
+    margin-bottom: 15px;
+}
+
+/* 修改输入框样式 */
+.addactor input[type="text"],
+.addactor select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* 修改按钮样式 */
+.addactor .btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* 添加鼠标悬停效果 */
+.addactor .btn:hover {
+    background-color: #0056b3;
+}

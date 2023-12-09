@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-container">
+    <h3 class="form-title">演员信息录入</h3>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <form method="post" class="actor-form">
+        <div class="form-group">
+            <label for="actor_id">演员ID</label>
+            <input type="text" id="actor_id" name="actor_id" readonly value="{{ actor_id }}">
+        </div>
+
+        <div class="form-group">
+            <label for="actor_name">演员名称</label>
+            <input type="text" id="actor_name" name="actor_name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="gender">性别</label>
+            <select id="gender" name="gender" required>
+                <option value="">请选择</option>
+                <option value="男">男</option>
+                <option value="女">女</option>
+                <option value="其他">其他</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="country">国家</label>
+            <input type="text" id="country" name="country" required>
+        </div>
+
+        <input class="btn" type="submit" value="添加演员">
+    </form>
+</div>
+{% endblock %}

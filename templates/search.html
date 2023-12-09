@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-container">
+    <h3 class="form-title">查询</h3>
+    <form method="get" action="{{ url_for('search_results') }}" class="search-form">
+        <div class="form-group">
+            <label for="search_type">查询类型</label>
+            <select name="type" id="search_type" class="form-control">
+                <option value="movie">电影</option>
+                <option value="actor">演员</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="search_query">查询内容</label>
+            <input type="text" id="search_query" name="query" class="form-control" required>
+        </div>
+        <input class="btn" type="submit" value="搜索">
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="results-container">
+    <h3>查询结果</h3>
+    {% if type == 'movie' %}
+        {% for item in results %}
+            <div class="movie-info">
+                <h4>{{ item.movie.movie_name }} ({{ item.movie.year }})</h4>
+                <p>国家: {{ item.movie.country }}</p>
+                <p>类型: {{ item.movie.type }}</p>
+                <p>上映日期: {{ item.movie.release_date.strftime('%Y-%m-%d') if item.movie.release_date else 'N/A' }}</p>
+                <p>相关人员:</p>
+                <ul>
+                    {% for relation in item.relations %}
+                        <li>{{ relation.actor.actor_name }} - {{ relation.relation_type }}</li>
+                    {% endfor %}
+                </ul>
+                <a href="https://movie.douban.com/subject_search?search_text={{ item.movie.movie_name }}" target="_blank" class="douban-link">查看豆瓣评价</a>
+            </div>
+        {% endfor %}
+    {% elif type == 'actor' %}
+        {% for item in results %}
+            <div class="actor-info">
+                <h4>{{ item.actor.actor_name }}</h4>
+                <p>性别: {{ '男' if item.actor.gender == '男' else '女' }}</p>
+                <p>国家: {{ item.actor.country }}</p>
+                <p>参演电影:</p>
+                <ul>
+                    {% for relation in item.relations %}
+                        <li>{{ relation.movie.movie_name }} ({{ relation.movie.year }}) - {{ relation.relation_type }}</li>
+                    {% endfor %}
+                </ul>
+                <a href="https://baike.baidu.com/item/{{ item.actor.actor_name }}" target="_blank" class="baike-link">查看百度百科</a>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}
+
