@@ -435,15 +435,24 @@ def add_movie():
         # 数据验证
         if not all([movie_id, movie_name, release_date, country, movie_type, year, box_office, director_name, lead_actor_names]):
             flash('所有字段都是必填的.')
-            return redirect(url_for('addmovie'))
+            return redirect(url_for('add_movie'))
 
         # 转换日期格式
         try:
             release_date = dt.strptime(release_date, '%Y-%m-%d')
         except ValueError:
             flash('无效的日期格式.')
-            return redirect(url_for('addmovie'))
-
+            return redirect(url_for('add_movie'))
+        # 检查电影ID是否已存在
+        existing_movie_id = MovieInfo.query.filter_by(movie_id=movie_id).first()
+        if existing_movie_id:
+            flash('电影ID已存在.')
+            return redirect(url_for('add_movie'))
+        # 检查电影名称是否已存在
+        existing_movie = MovieInfo.query.filter_by(movie_name=movie_name).first()
+        if existing_movie:
+            flash('电影名称已存在.')
+            return redirect(url_for('add_movie'))
         # 创建新电影对象
         new_movie = MovieInfo(
             movie_id=movie_id,
@@ -534,8 +543,12 @@ def add_actor():
         # 数据验证
         if not all([actor_name, gender, country]):
             flash('所有字段都是必填的.')
-            return redirect(url_for('addactor', movie_id=movie_id, actor_name=actor_name))
-
+            return redirect(url_for('add_actor', movie_id=movie_id, actor_name=actor_name))
+        # 检查演员信息是否已存在
+        existing_actor = ActorInfo.query.filter_by(actor_name=actor_name, gender=gender, country=country).first()
+        if existing_actor:
+            flash('相同的演员信息已存在.')
+            return redirect(url_for('add_actor', movie_id=movie_id, actor_name=actor_name))
         # 创建新演员对象
         new_actor = ActorInfo(
             actor_id=actor_id,
@@ -591,3 +604,125 @@ def search_results():
 
     return render_template('search_results.html', results=results, type=query_type)
 
+
+@app.route('/box_office', methods=['GET', 'POST'])
+def box_office():
+    movies = db.session.query(
+        MovieInfo.movie_name,
+        MoveBox.box
+    ).join(MoveBox, MovieInfo.movie_id == MoveBox.movie_id).all()
+
+    total_box = sum(movie.box for movie in movies)
+    avg_box = total_box / len(movies) if movies else 0
+    top_movie = max(movies, key=lambda movie: movie.box) if movies else None
+    # 获取每个年份的平均票房
+    year_avg_box = db.session.query(
+        MovieInfo.year,
+        db.func.avg(MoveBox.box).label('avg_box')
+    ).join(MoveBox, MovieInfo.movie_id == MoveBox.movie_id).group_by(MovieInfo.year).all()
+    search_results = None
+    if request.method == 'POST':
+        search_type = request.form.get('search_type')
+        name = request.form.get('name')
+
+        if search_type == 'director':
+            search_results = db.session.query(
+                MovieInfo.movie_name, MoveBox.box
+            ).join(MoveBox).join(MovieActorRelation).join(ActorInfo).filter(
+                MovieActorRelation.relation_type == '导演',
+                ActorInfo.actor_name == name
+            ).all()
+        elif search_type == 'actor':
+            search_results = db.session.query(
+                MovieInfo.movie_name, MoveBox.box
+            ).join(MoveBox).join(MovieActorRelation).join(ActorInfo).filter(
+                MovieActorRelation.relation_type == '主演',
+                ActorInfo.actor_name == name
+            ).all()
+    return render_template('box_office.html', movies=movies, total_box=total_box, avg_box=avg_box, top_movie=top_movie, year_avg_box=year_avg_box,search_results=search_results)
+    
+
+
+@app.route('/box_office_prediction', methods=['GET', 'POST'])
+def box_office_prediction():
+    if request.method == 'POST':
+        movie_name = request.form.get('movie_name')
+        release_date = request.form.get('release_date')
+        lead_actor = request.form.get('lead_actor')
+        director = request.form.get('director')
+        movie_type = request.form.get('movie_type')
+
+        # 根据输入的信息计算预测票房
+        actor_avg_box = calculate_actor_avg_box(lead_actor)
+        director_avg_box = calculate_director_avg_box(director)
+        year_avg_box = calculate_year_avg_box(release_date)
+        type_avg_box = calculate_type_avg_box(movie_type)
+
+        # 假设预测票房是这些均值的组合
+        predicted_box_office = (actor_avg_box + director_avg_box + year_avg_box + type_avg_box) / 4
+
+        return render_template('box_office_prediction_result.html',
+                               predicted_box_office=predicted_box_office,
+                               actor_avg_box=actor_avg_box,
+                               director_avg_box=director_avg_box,
+                               year_avg_box=year_avg_box,
+                               type_avg_box=type_avg_box)
+
+    return render_template('box_office_prediction.html')
+
+    # 实现根据演员名称计算其主演电影的平均票房
+def calculate_actor_avg_box(actor_name):
+    result = db.session.query(db.func.avg(MoveBox.box)).join(
+        MovieActorRelation, MoveBox.movie_id == MovieActorRelation.movie_id
+    ).join(
+        ActorInfo, MovieActorRelation.actor_id == ActorInfo.actor_id
+    ).filter(
+        ActorInfo.actor_name == actor_name,
+        MovieActorRelation.relation_type == '主演'
+    ).scalar()
+    return result if result else 0
+
+    # 实现根据导演名称计算其导演电影的平均票房
+
+def calculate_director_avg_box(director_name):
+    result = db.session.query(db.func.avg(MoveBox.box)).join(
+        MovieActorRelation, MoveBox.movie_id == MovieActorRelation.movie_id
+    ).join(
+        ActorInfo, MovieActorRelation.actor_id == ActorInfo.actor_id
+    ).filter(
+        ActorInfo.actor_name == director_name,
+        MovieActorRelation.relation_type == '导演'
+    ).scalar()
+    return result if result else 0
+
+    # 实现根据上映年份计算当年电影的平均票房
+
+
+def calculate_type_avg_box(movie_type):
+    result = db.session.query(db.func.avg(MoveBox.box)).join(
+        MovieInfo, MoveBox.movie_id == MovieInfo.movie_id
+    ).filter(
+        MovieInfo.type == movie_type
+    ).scalar()
+    return result if result else 0
+
+def calculate_year_avg_box(release_date_str):
+    try:
+        release_date = dt.strptime(release_date_str, '%Y-%m-%d')  # 转换为 datetime 对象
+        year = release_date.year
+        result = db.session.query(db.func.avg(MoveBox.box)).join(
+            MovieInfo, MoveBox.movie_id == MovieInfo.movie_id
+        ).filter(
+            db.func.extract('year', MovieInfo.release_date) == year
+        ).scalar()
+    except ValueError:
+        # 如果日期格式不正确，可以返回一个默认值或抛出错误
+        return 0
+
+    # 计算该年份的平均票房
+    result = db.session.query(db.func.avg(MoveBox.box)).join(
+        MovieInfo, MoveBox.movie_id == MovieInfo.movie_id
+    ).filter(
+        db.func.extract('year', MovieInfo.release_date) == year
+    ).scalar()
+    return result if result else 0

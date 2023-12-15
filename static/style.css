@@ -303,3 +303,42 @@ input[name=year] {
 .addactor .btn:hover {
     background-color: #0056b3;
 }
+
+
+/* 票房预测结果页面的样式 */
+.prediction-result .result-title {
+    color: #007bff; /* 示例：标题颜色 */
+}
+
+.prediction-result .result-card {
+    background-color: #f8f9fa; /* 示例：卡片背景颜色 */
+    border-radius: 8px; /* 示例：卡片圆角 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 示例：卡片阴影 */
+}
+
+.prediction-result .card-text {
+    font-size: 16px; /* 示例：文字大小 */
+    color: #333; /* 示例：文字颜色 */
+}
+
+/* 票房预测输入界面的样式 */
+.prediction-input .card {
+    background-color: #f8f9fa; /* 示例：卡片背景颜色 */
+    border-radius: 8px; /* 示例：卡片圆角 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 示例：卡片阴影 */
+    padding: 20px;
+}
+
+.prediction-input .card-title {
+    color: #007bff; /* 示例：标题颜色 */
+    margin-bottom: 20px; /* 示例：标题下边距 */
+}
+
+.prediction-input .form-group {
+    margin-bottom: 15px; /* 示例：表单组件间距 */
+}
+
+.prediction-input .btn-primary {
+    background-color: #007bff; /* 示例：按钮颜色 */
+    border-color: #007bff; /* 示例：按钮边框颜色 */
+}

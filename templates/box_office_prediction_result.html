@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4 prediction-result">
+    <h2 class="text-center mb-4 result-title">票房预测结果</h2>
+    <div class="card result-card">
+        <div class="card-body">
+            <h4 class="card-title">预测票房</h4>
+            <p class="card-text">预测票房: <strong>{{ predicted_box_office }} 百万</strong></p>
+            <p class="card-text">主演的平均票房: <strong>{{ actor_avg_box }} 百万</strong></p>
+            <p class="card-text">导演的平均票房: <strong>{{ director_avg_box }} 百万</strong></p>
+            <p class="card-text">上映年份的平均票房: <strong>{{ year_avg_box }} 百万</strong></p>
+            <p class="card-text">电影类型的平均票房: <strong>{{ type_avg_box }} 百万</strong></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

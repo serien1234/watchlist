@@ -7,6 +7,7 @@
     <title>{{ user.name }}'s Watchlist</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+        
     {% endblock %}
 </head>
 <body>
@@ -25,9 +26,13 @@
                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
                 <li><a href="{{ url_for('add_movie') }}">Addmovie</a></li>
                 <li><a href="{{ url_for('search') }}">Search</a></li>
+                <li><a href="{{ url_for('box_office') }}">Boxanalysis</a></li>
+                <li><a href="{{ url_for('box_office_prediction') }}">Box Office Prediction</a></li>
             {% else %}
                 <li><a href="{{ url_for('login') }}">Login</a></li>
                 <li><a href="{{ url_for('search') }}">Search</a></li>
+                <li><a href="{{ url_for('box_office') }}">Boxanalysis</a></li>
+                <li><a href="{{ url_for('box_office_prediction') }}">Box Office Prediction</a></li>
             {% endif %}
         </ul>
     </nav>

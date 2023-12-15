@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-3">票房分析</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <canvas id="boxOfficeChart"></canvas>
+        </div>
+        <div class="col-md-6">
+            <p>总票房: {{ total_box }}</p>
+            <p>平均票房: {{ avg_box }}</p>
+            {% if top_movie %}
+            <p>票房最高的电影: {{ top_movie.movie_name }} ({{ top_movie.box }})</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('boxOfficeChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [{% for movie in movies %}'{{ movie.movie_name }}',{% endfor %}],
+            datasets: [{
+                label: '票房 (百万)',
+                data: [{% for movie in movies %}{{ movie.box }},{% endfor %}],
+                backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                borderColor: 'rgba(0, 123, 255, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+<!-- 添加每个年份的平均票房图表 -->
+<div class="container mt-4">
+    <h3>每年平均票房</h3>
+    <canvas id="avgBoxOfficeByYearChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // 现有的票房图表脚本
+
+    // 每年平均票房图表
+    var ctxYear = document.getElementById('avgBoxOfficeByYearChart').getContext('2d');
+    var avgBoxOfficeByYearChart = new Chart(ctxYear, {
+        type: 'line',
+        data: {
+            labels: [{% for data in year_avg_box %}'{{ data.year }}',{% endfor %}],
+            datasets: [{
+                label: '平均票房 (百万)',
+                data: [{% for data in year_avg_box %}{{ data.avg_box }},{% endfor %}],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+<!-- 添加查询表单 -->
+<div class="container mt-4">
+    <form method="post">
+        <div class="form-group">
+            <label for="name">导演/演员名称:</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <select class="form-control" name="search_type">
+                <option value="director">导演</option>
+                <option value="actor">演员</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">查询</button>
+    </form>
+</div>
+
+<!-- 显示查询结果 -->
+{% if search_results %}
+<div class="container mt-4">
+    <h3>查询结果</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>电影名称</th>
+                <th>票房 (百万)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for movie in search_results %}
+            <tr>
+                <td>{{ movie.movie_name }}</td>
+                <td>{{ movie.box }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}
