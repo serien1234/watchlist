@@ -1,4 +1,6 @@
 from flask import Flask, render_template
+from joblib import load
+import numpy as np
 from flask_sqlalchemy import SQLAlchemy # 导入扩展类
 from flask import request, url_for, redirect, flash
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -726,3 +728,33 @@ def calculate_year_avg_box(release_date_str):
         db.func.extract('year', MovieInfo.release_date) == year
     ).scalar()
     return result if result else 0
+
+
+# 加载模型
+model = load('model.joblib')
+@app.route('/box_prediction', methods=['GET', 'POST'])
+def box_prediction():
+    prediction = ""
+    if request.method == 'POST':
+        # 获取用户输入的特征
+        budget = request.form.get('budget', type=float, default=0.0)
+        popularity = request.form.get('popularity', type=float, default=0.0)
+        runtime = request.form.get('runtime', type=float, default=0.0)
+        vote_count = request.form.get('vote_count', type=int, default=0)
+        release_year = request.form.get('release_year', type=int, default=0)
+        release_month = request.form.get('release_month', type=int, default=0)
+        genre = request.form.get('genre')
+
+        # 处理genre输入（将其转换为模型预期的格式）
+        genres = ['Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 'Foreign', 'History', 'Horror', 'Music', 'Mystery', 'Romance', 'Science Fiction', 'TV Movie', 'Thriller', 'War', 'Western']
+        genre_features = [1 if genre == g else 0 for g in genres]
+
+        # 组合所有特征
+        features = [budget, popularity, runtime, vote_count, release_year, release_month] + genre_features
+        features = np.array(features).reshape(1, -1)
+
+        # 使用模型进行预测
+        prediction = model.predict(features)[0]
+
+    return render_template('prediction.html', prediction=prediction)
+

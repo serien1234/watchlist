@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4 prediction">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">基于大数据的票房预测</h2>
+            <form method="post" action="{{ url_for('box_prediction') }}">
+                <input type="text" class="form-control mb-2" name="budget" placeholder="预算" required>
+                <input type="text" class="form-control mb-2" name="popularity" placeholder="流行度" required>
+                <input type="text" class="form-control mb-2" name="runtime" placeholder="时长" required>
+                <input type="text" class="form-control mb-2" name="vote_count" placeholder="投票数" required>
+                <input type="text" class="form-control mb-2" name="release_year" placeholder="上映年份" required>
+                <input type="text" class="form-control mb-2" name="release_month" placeholder="上映月份" required>
+                <select class="form-control mb-2" name="genre" required>
+                    <option value="">选择电影类型</option>
+                    <option value="Action">动作</option>
+                    <option value="Adventure">冒险</option>
+                    <option value="Animation">动画</option>
+                    <option value="Comedy">喜剧</option>
+                    <option value="Crime">犯罪</option>
+                    <option value="Documentary">纪录片</option>
+                    <option value="Drama">剧情</option>
+                    <option value="Family">家庭</option>
+                    <option value="Fantasy">奇幻</option>
+                    <option value="Foreign">外国</option>
+                    <option value="History">历史</option>
+                    <option value="Horror">恐怖</option>
+                    <option value="Music">音乐</option>
+                    <option value="Mystery">悬疑</option>
+                    <option value="Romance">爱情</option>
+                    <option value="Science Fiction">科幻</option>
+                    <option value="TV Movie">电视电影</option>
+                    <option value="Thriller">惊悚</option>
+                    <option value="War">战争</option>
+                    <option value="Western">西部</option>
+                </select>
+                <button type="submit" class="btn btn-primary">预测票房</button>
+            </form>
+            {% if prediction %}
+                <div class="alert alert-success mt-4">
+                    <strong>预测的票房是:</strong> {{ prediction }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

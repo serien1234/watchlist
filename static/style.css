@@ -342,3 +342,78 @@ input[name=year] {
     background-color: #007bff; /* 示例：按钮颜色 */
     border-color: #007bff; /* 示例：按钮边框颜色 */
 }
+
+/* 基础样式设置 */
+.prediction .card {
+    background-color: #ffffff; /* 纯白背景 */
+    border: none; /* 去除边框 */
+    border-radius: 20px; /* 圆角效果 */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* 明显的阴影效果 */
+    margin: 30px auto; /* 更大的上下边距 */
+}
+
+.prediction .card-body {
+    padding: 30px; /* 增加内边距 */
+}
+
+/* 标题样式 */
+.prediction h2.card-title {
+    color: #0056b3; /* 深蓝色标题 */
+    font-weight: 600; /* 字体加粗 */
+    margin-bottom: 30px; /* 增加与表单的间距 */
+    font-size: 24px; /* 增大字体大小 */
+    text-align: center; /* 居中对齐 */
+}
+
+/* 表单控件样式 */
+.prediction .form-control {
+    border-radius: 10px; /* 圆角输入框 */
+    border: 2px solid #ced4da; /* 加粗边框 */
+    padding: 15px 20px; /* 增加填充 */
+    margin-bottom: 20px; /* 增加控件间距 */
+    font-size: 16px; /* 增大字体大小 */
+}
+
+/* 聚焦效果 */
+.prediction .form-control:focus {
+    border-color: #80bdff; /* 聚焦时边框颜色 */
+    box-shadow: 0 0 8px rgba(0,123,255,.25); /* 聚焦时阴影效果 */
+}
+
+/* 提交按钮样式 */
+.prediction .btn-primary {
+    background-color: #28a745; /* 深绿色背景 */
+    color: #ffffff; /* 白色文字 */
+    padding: 15px 30px; /* 增加内边距 */
+    border-radius: 25px; /* 圆角效果 */
+    border: none; /* 去除边框 */
+    font-size: 17px; /* 字体大小 */
+    font-weight: 600; /* 字体加粗 */
+    letter-spacing: 0.5px; /* 字母间距 */
+    transition: background-color 0.3s ease; /* 背景颜色过渡效果 */
+    box-shadow: 0 4px 6px rgba(40, 167, 69, 0.4); /* 阴影效果 */
+    cursor: pointer; /* 鼠标悬停时的指针效果 */
+}
+
+.prediction .btn-primary:hover,
+.prediction .btn-primary:focus {
+    background-color: #218838; /* 鼠标悬停或聚焦时的深一些的绿色 */
+    color: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5); /* 鼠标悬停或聚焦时的阴影 */
+}
+
+.prediction .btn-primary:active {
+    background-color: #1e7e34; /* 按钮被点击时的更深绿色 */
+    box-shadow: 0 5px 10px rgba(40, 167, 69, 0.4); /* 按钮被点击时的阴影 */
+    transform: translateY(2px); /* 按钮被点击时的微小下移效果 */
+}
+
+
+/* 预测结果样式 */
+.prediction .alert {
+    margin-top: 25px;
+    font-weight: bold;
+    border-radius: 8px; /* 圆角边框 */
+    padding: 15px; /* 增加内边距 */
+    text-align: center; /* 文本居中 */
+}
